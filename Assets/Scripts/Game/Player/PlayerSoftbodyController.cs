@@ -137,7 +137,7 @@ public class PlayerSoftbodyController : PlayerController
 
         Vector3 diff = (hand.rectTransform.position - holdColliderPoint);
         float factor = Mathf.Clamp(diff.sqrMagnitude / screenGrabRadius, 0.0f, movingRadius);
-        float y = lastFrameVelocity.y < 0.0f ? lastFrameVelocity.y * 7.5f : lastFrameVelocity.y * 0.15f;
+        float y = lastFrameVelocity.y < 0.0f ? lastFrameVelocity.y * 7.5f : lastFrameVelocity.y * -5f;
 
         Vector3 movement = new Vector3(diff.normalized.x, 0, diff.normalized.y).normalized * movingRadius;
         movement *= Mathf.Clamp01(1 - (Mathf.Abs(y) / 9.81f));

@@ -89,7 +89,7 @@ public class PlayerSphereController : PlayerController
 
     public override void SetVelocity(Vector3 velocity)
     {
-        _rb.AddForce(velocity * 40.592f, ForceMode.Impulse);
+        _rb.AddForce(velocity * 40.592f * _rb.mass, ForceMode.Impulse);
     }
 
     public override void SetPosition(Vector3 pos)

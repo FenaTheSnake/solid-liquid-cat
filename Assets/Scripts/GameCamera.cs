@@ -24,17 +24,27 @@ public class GameCamera : MonoBehaviour
     GameCameraFollowing _followingMode;
     Vector3 _followingVec3;
 
+    bool _hasCenteredOnPlayer = false;
+
     private void Awake()
     {
         //if (_followingTransform) _curPos = _followingTransform.position;
         //else _curPos = Vector3.zero;
-        _curPos = Vector3.zero;
 
         Application.targetFrameRate = 60;
     }
 
     void FixedUpdate()
     {
+        if (!_hasCenteredOnPlayer)
+        {
+            if (player && player.GetTransform())
+            {
+                _curPos = player.GetTransform().position;
+                _hasCenteredOnPlayer = true;
+            }
+        }
+
         Vector3 camPos = Vector3.zero;
         camPos.x = _curPos.x + Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
         camPos.y = _curPos.y + Mathf.Sin(angleOfAttack * Mathf.Deg2Rad) * distance;

@@ -269,6 +269,7 @@ public class SoftbodyGenerator : MonoBehaviour
         // add center of mass vertex to OptimizedVertex list
         {
             var _tempObj = new GameObject("centerOfMass");
+            _tempObj.tag = "Player";
 
             if (!debugMode)
                 _tempObj.hideFlags = HideFlags.HideAndDontSave;

@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
 
     public Transform GetTransform()
     {
+        if (playerController == null) return null;
         return playerController.GetTransform();
     }
 }
