@@ -7,6 +7,7 @@ using Zenject;
 public class Player : MonoBehaviour
 {
     [SerializeField] List<PlayerController> playerControllers;
+    [SerializeField] ParticleSystem poof;
     PlayerController playerController;
     int curPCIndex = 0;
 
@@ -75,6 +76,8 @@ public class Player : MonoBehaviour
         GetAppropriatePositionResult result = playerControllers[newPCIndex].GetAppropriatePositionForTransformation(pos);
         if (!result.canBePlaced) return;
 
+        poof.transform.position = Vector3.MoveTowards(playerController.GetTransform().position, Camera.main.transform.position, 1.5f);
+        poof.Play();
         curPCIndex = newPCIndex;
         playerController.Deactivate();
 

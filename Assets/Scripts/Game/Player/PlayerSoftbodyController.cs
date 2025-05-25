@@ -17,6 +17,8 @@ public class PlayerSoftbodyController : PlayerController
 
     [SerializeField] GameObject sphereCat;
 
+    [SerializeField] ParticleSystem particlesOnActivate;
+
     SoftbodyGenerator _softbody;
 
     Collider _holdCollider;
@@ -68,6 +70,13 @@ public class PlayerSoftbodyController : PlayerController
         }
 
         catFace.GetComponent<LookAtConstraint>().roll = 0;
+
+        if (particlesOnActivate)
+        {
+            particlesOnActivate.transform.parent = _softbody.GetTrueTransform();
+            particlesOnActivate.transform.localPosition = Vector3.zero;
+            particlesOnActivate.Play();
+        }
         //gameObject.SetActive(true);
     }
 
@@ -116,7 +125,12 @@ public class PlayerSoftbodyController : PlayerController
 
         Vector3 diff = (hand.rectTransform.position - holdColliderPoint);
         float factor = Mathf.Clamp(diff.sqrMagnitude / screenGrabRadius, 0.0f, movingRadius);
-        Vector3 to = _holdCollider.transform.position + new Vector3(diff.normalized.x, 0, diff.normalized.y) * movingRadius;
+        float y = lastFrameVelocity.y * 10.0f;
+
+        Vector3 movement = new Vector3(diff.normalized.x, 0, diff.normalized.y).normalized * movingRadius;
+        movement *= Mathf.Clamp01(1 - (Mathf.Abs(y) / 9.81f));
+        movement.y = y;
+        Vector3 to = _holdCollider.transform.position + movement;
 
         Vector3 followPoint = Vector3.MoveTowards(_holdCollider.transform.position, to, factor);
 
@@ -135,12 +149,12 @@ public class PlayerSoftbodyController : PlayerController
     private void Update()
     {
         catFace.transform.position = Vector3.MoveTowards(_softbody.GetTrueTransform().position, Camera.main.transform.position, catFaceOffset);
-        ProcessGrabbing();
     }
 
     private void FixedUpdate()
     {
         lastFrameVelocity = _softbody.GetTrueTransform().position - lastPosition;
         lastPosition = _softbody.GetTrueTransform().position;
+        ProcessGrabbing();
     }
 }

@@ -8,6 +8,8 @@ public class PlayerSphereController : PlayerController
     [SerializeField] Hand hand;
     [SerializeField] float catFaceOffset = 0.5f;
 
+    [SerializeField] ParticleSystem particlesOnActivate;
+
     Rigidbody _rb;
     float _radius;
 
@@ -53,6 +55,9 @@ public class PlayerSphereController : PlayerController
         gameObject.SetActive(true);
         _rb = GetComponent<Rigidbody>();
         _rb.linearVelocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
+
+        if (particlesOnActivate) particlesOnActivate.Play();
 
         //catFace.GetComponent<LookAtConstraint>().enabled = false;
     }
