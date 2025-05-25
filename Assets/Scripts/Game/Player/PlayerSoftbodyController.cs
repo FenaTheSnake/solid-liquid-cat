@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using Zenject;
 
 public class PlayerSoftbodyController : PlayerController
 {
@@ -28,6 +30,14 @@ public class PlayerSoftbodyController : PlayerController
 
     Vector3 lastPosition;
     Vector3 lastFrameVelocity;
+
+    Surfaces _surfaces;
+
+    [Inject]
+    public void Construct(Surfaces surfaces)
+    {
+        _surfaces = surfaces;
+    }
 
     private void Start()
     {
@@ -88,6 +98,8 @@ public class PlayerSoftbodyController : PlayerController
 
         SetPosition(new Vector3(0, 0, -10000));
         //gameObject.SetActive(false); // can't disable cuz joints break (thx unity)
+
+        _surfaces.UnstickAllVerticesFromAllSurfaces();
     }
 
     public override Vector3 GetLastFrameVelocity()
@@ -125,7 +137,7 @@ public class PlayerSoftbodyController : PlayerController
 
         Vector3 diff = (hand.rectTransform.position - holdColliderPoint);
         float factor = Mathf.Clamp(diff.sqrMagnitude / screenGrabRadius, 0.0f, movingRadius);
-        float y = lastFrameVelocity.y * 10.0f;
+        float y = lastFrameVelocity.y < 0.0f ? lastFrameVelocity.y * 7.5f : lastFrameVelocity.y * 0.15f;
 
         Vector3 movement = new Vector3(diff.normalized.x, 0, diff.normalized.y).normalized * movingRadius;
         movement *= Mathf.Clamp01(1 - (Mathf.Abs(y) / 9.81f));
