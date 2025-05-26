@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraAttractor : MonoBehaviour
 {
+    [SerializeField] bool doNotSnapToFloor = false;
+
     Vector3 _floorPoint;
     GameCamera _camera;
     float _maxRadius;
@@ -12,16 +14,22 @@ public class CameraAttractor : MonoBehaviour
 
         _maxRadius = CalculareCircumscribedCircle();
 
+        if (doNotSnapToFloor)
+        {
 
-        var _levelMask = LayerMask.GetMask("Level");
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 100.0f, _levelMask))
+            var _levelMask = LayerMask.GetMask("Level");
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, 100.0f, _levelMask))
+            {
+                _floorPoint = hit.point;
+            }
+            else
+            {
+                Debug.LogWarning(name + " no floor found");
+            }
+        } else
         {
-            _floorPoint = hit.point;
-        } 
-        else
-        {
-            Debug.LogWarning(name + " no floor found");
+            _floorPoint = transform.position;
         }
     }
 

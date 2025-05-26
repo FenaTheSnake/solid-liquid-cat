@@ -85,6 +85,8 @@ public class Player : MonoBehaviour
         playerController.Activate();
         playerController.SetVelocity(vel);
         playerController.SetPosition(result.pos);
+
+        _gameState.PlayerTransformed(playerController);
     }
 
     public void OnReset(InputAction.CallbackContext context)

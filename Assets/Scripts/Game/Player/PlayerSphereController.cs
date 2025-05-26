@@ -13,6 +13,8 @@ public class PlayerSphereController : PlayerController
     Rigidbody _rb;
     float _radius;
 
+    float _prevFrameVel;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -106,5 +108,21 @@ public class PlayerSphereController : PlayerController
 
         catFace.GetComponent<LookAtConstraint>().roll -= _rb.linearVelocity.x * 2.0f;// * -Mathf.Sign(_rb.linearVelocity.x);
         //catFace.transform.localRotation = transform.localRotation; 
+    }
+
+    private void FixedUpdate()
+    {
+        //if (_prevFrameVel == 0)
+        //{
+        //    _prevFrameVel = _rb.linearVelocity.magnitude;
+        //    return;
+        //}
+        //float d = Mathf.Abs(_rb.linearVelocity.magnitude / _prevFrameVel);
+        //Debug.Log(d);
+        //if (d > 1.005f)
+        //{
+        //    _rb.linearVelocity *= 1.2f;
+        //}
+        //_prevFrameVel = _rb.linearVelocity.magnitude;
     }
 }

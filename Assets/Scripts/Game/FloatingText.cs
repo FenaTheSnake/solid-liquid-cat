@@ -18,7 +18,7 @@ public class FloatingText : MonoBehaviour
         _cam = Camera.main;
         _canvas = GameObject.FindAnyObjectByType<Canvas>();
 
-        //_text.transform.SetParent(_canvas.transform);
+        _text.transform.SetParent(_canvas.transform);
     }
 
     void Update()
